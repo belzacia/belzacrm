@@ -6,11 +6,22 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Spatie\Permission\Traits\HasRoles;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, HasRoles, HasApiTokens;
+
+    const FIRST_NAME = 'first_name';
+    const LAST_NAME = 'last_name';
+    const NAME = 'name';
+    const EMAIL = 'email';
+    const PASSWORD = 'password';
+    const REMEMBER_TOKEN = 'remember_token';
+    const EMAIL_VERIFIED_AT = 'email_verified_at';
+    const STATUS = 'status';
 
     /**
      * The attributes that are mass assignable.
@@ -18,9 +29,11 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
-        'email',
-        'password',
+        self::FIRST_NAME,
+        self::LAST_NAME,
+        self::NAME,
+        self::EMAIL,
+        self::PASSWORD
     ];
 
     /**
@@ -29,8 +42,8 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $hidden = [
-        'password',
-        'remember_token',
+        self::PASSWORD,
+        self::REMEMBER_TOKEN
     ];
 
     /**
@@ -41,8 +54,8 @@ class User extends Authenticatable
     protected function casts(): array
     {
         return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
+            self::EMAIL_VERIFIED_AT => 'datetime',
+            self::PASSWORD => 'hashed',
         ];
     }
 }
